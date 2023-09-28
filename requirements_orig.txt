@@ -1,4 +1,0 @@
-Flask==2.0.2
-Pillow==8.3.2
-openpyxl==3.0.9
-bootstrap-colorpicker==3.2.0  # Add the new color picker package
