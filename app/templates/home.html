@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}Color Palette Generator{% endblock %}
+
+{% block content %}
+<h2 class="top-padding">Color Palette Generator</h2>
+    <div class="container top-padding">
+      <form method="POST" action="{{ url_for('main.generate') }}" class="needs-validation">
+        <div class="row">
+          <div class="col-md-4 section-padding">
+            <h4>Palette Name</h4>
+            <input type="text" class="form-control" name="name" id="name" required>
+            <div class="invalid-feedback">
+              Please provide a palette name.
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 section-padding">
+            <div class="form-check">
+
+            </div>
+            <h4>Primary Color</h4>
+            <input type="text" class="form-control" name="primary" id="primary" data-coloris required pattern="^#(?:[0-9a-fA-F]{3}){1,2}$">
+            <div class="invalid-feedback">
+              Please provide a primary color.
+            </div>
+          </div>
+          <div class="col-md-4 section-padding">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="enableSecondary">
+              <label class="form-check-label" for="enableSecondary">Enable</label>
+            </div>
+            <h4>Secondary Color</h4>
+            <input type="text" class="form-control" name="secondary" id="secondary" data-coloris disabled>
+          </div>
+          <div class="col-md-4 section-padding">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="enableTertiary">
+              <label class="form-check-label" for="enableTertiary">Enable</label>
+            </div>
+            <h4>Tertiary Color</h4>
+            <input type="text" class="form-control" name="tertiary" id="tertiary" data-coloris disabled>
+          </div>
+        </div>
+        <div class="row top-padding">
+          <div class="col-md-4"></div>
+          <div class="col-sm-4 col-xs-6 section-padding">
+            <button type="reset" id="resetButton" class="btn btn-lg reset-btn">Reset Colors</button>
+          </div>
+          <div class="col-sm-4 col-xs-6 section-padding">
+            <button type="submit" id="submitButton" class="btn btn-lg submit-btn">Generate Palette</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+    <div class="container top-padding">
+      <div class="row">
+      <div class="col-md-4">
+        <h4>What PalGen Does</h4>
+        <p>The Color Palette Generator creates a "Material Design" pallette which includes shades from 100
+          to 900 for each color. In addition to the Primary, Secondary, and Tertiary colors, the generator also
+          creates shades for a neutral grey, as well as for blue, red, green, and orange (for use in interface
+          elements - e.g. buttons, charts and graphs).
+        </p>
+        </div>
+        <div class="col-md-4">
+          <h4>How To Use PalGen</h4>
+          <p>To use PalGen, select at least a Primary color. Secondary and Tertiary colors are OPTIONAL.
+          Once you have selected your colors, click the "Generate Palette" button. Once generated, you will be taken to a page
+          where you can download your palette in the formats provided.
+          </p>
+          </div>
+          <div class="col-md-4">
+            <h4>What You Get</h4>
+            <p>PalGen provides your shaded color palette in the following formats:
+              <ul>
+                <li>Labeled PNG file</li>
+                <li>Labeled Excel file</li>
+                <li>JSON File</li>
+                <li>Flutter/Dart Code</li>
+                <li>CSS/SCSS Variables</li>
+                <li>XML for Android</li>
+              </ul>
+            </p>
+            </div>
+      </div>
+    </div>
+{% endblock %}

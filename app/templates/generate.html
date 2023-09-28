@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Color Palette Files{% endblock %}
+
+{% block content %}
+    <h2 class="top-padding">Color Palette Files</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 top-padding section-padding">
+    {% if data %}
+    <p>Name: <strong>{{ data.name }}</strong></p>
+    <div class="row">
+    <div class="col-md-4 no-padding">
+        <div class="rounded-color-box" style="background-color: {{ data.primary }};">
+        <p><small>Primary</small></p>
+        </div>
+    </div>
+    <div class="col-md-4 no-padding">
+        <div class="rounded-color-box" style="background-color: {{ data.secondary }};">
+            {% if data.secondary %}
+        <p><small>Secondary</small></p>
+        {% endif %}
+        </div>
+    </div>
+    <div class="col-md-4 no-padding">
+        <div class="rounded-color-box" style="background-color: {{ data.tertiary }};">
+            {% if data.tertiary %}
+        <p><small>Tertiary</small></p>
+        {% endif %}
+        </div>
+    </div>
+    </div>
+
+    <h3>Download Files</h3>
+    <p><a href="{{ url_for('main.download_file', palette_name=data.name, filename=data.png_file) }}" download>Download PNG Image</a></p>
+    <p><a href="{{ url_for('main.download_file', palette_name=data.name, filename=data.excel_file) }}" download>Download Excel File</a></p>
+    </div>
+    <div class="col-md-8 section-padding">
+        <img src="{{ url_for('main.display_image', palette_name=data.name, filename=data.png_file) }}" alt="Color Palette Image" class="img-fluid">
+    </div>
+    </div>
+    </div>
+    {% else %}
+    There is no data here.
+{% endif %}
+{% endblock %}
