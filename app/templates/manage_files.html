@@ -20,8 +20,20 @@
         </h2>
         <div id="collapse{{ palette.name }}" class="accordion-collapse collapse" aria-labelledby="heading{{ palette.name }}" data-bs-parent="#accordionFiles">
             <div class="accordion-body">
-              <i class="fas fa-file-pdf"></i>
-                {{ palette.files }}
+                {% for file in palette.files %}
+                <!-- File Card -->
+                <div class="card">
+                    <div class="icon-container file-png">
+                        <i class="fas fa-file-excel icon"></i>
+                    </div>
+                    <div class="container">
+                        <h4><b>Excel</b></h4>
+                        <p class="small">{{ file|truncate(15) }}xslx</p>
+                        <div>download / delete</div>
+                    </div>
+                </div>
+                <!-- File Card End -->
+                {% endfor %}
             </div>
         </div>
     </div>
