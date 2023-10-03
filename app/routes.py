@@ -27,6 +27,8 @@ def generate():
         # Get data from POST request
         # Name of palette
         name = request.form.get('name').title().replace(" ", "")
+        # Strip non-alphanumeric characters from name
+        name = ''.join(e for e in name if e.isalnum())
         # Primary color hex code
         primary_hex = request.form.get('primary')
         # Secondary color hex code
@@ -42,7 +44,6 @@ def generate():
 
         # Generate the palette
         palette = gen.PaletteGenerator(name, primary_hex, secondary_hex, tertiary_hex)
-
         #Test data for output
         data = {'name': palette.user_data['name'],
                 'primary': palette.user_data['primary'],
