@@ -1,5 +1,5 @@
 """
-Flask Configuration File - NO DATASE FOR THIS PROJECT
+Flask Configuration File - NO DATASET FOR THIS PROJECT
 """
 import os
 

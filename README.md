@@ -1,5 +1,23 @@
 # Color Palette Generator with Flask
 
+## What PalGen Does
+
+The Color Palette Generator creates a UI design pallette which includes shades from 100 to 900 for each color selected above (Primary, Secondary & Tertiary) as well as shades for the palette's supporting colors: Neutral grey, Blue, Red, Green, and Orange (for use in interface elements - e.g. buttons, charts and graphs).
+
+## How To Use PalGen
+
+To use PalGen, give your palette a name and select at least a Primary color. Secondary and Tertiary colors are OPTIONAL. Once you have selected your colors, click the "Generate Palette" button. Once generated, you will be taken to a page where you can download your palette in the formats provided.
+
+## What It Makes
+
+PalGen provides your shaded color palette in the following formats:
+
+* Palette PNG file
+* Labelled Excel file
+* Palette CSS variables
+* Flutter (Dart) constants
+* JSON file
+
 ## Setup
 
 1. Install Python 3.x
@@ -12,11 +30,5 @@
     ```
     python run.py
     ```
-5. Open your web browser and go to `http://127.0.0.1`
-
-## Usage
-
-1. Use the color picker or manually input your desired colors in HSB, RGB, or HEX format.
-2. Optional: Input a prefix for the output files.
-3. Click 'Generate Palette' to create the color palette PNG and Excel files.
+5. Open your web browser and go to `http://127.0.0.1:5000`
 

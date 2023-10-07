@@ -1,0 +1,87 @@
+/* EXAMPLE USAGE */
+/* .header { */
+/* background-color: var(--primary-500); */
+/* color: var(--neutral-900); */
+/* } */
+
+/* Button Styles */
+/* .button { */
+/*   background-color: var(--secondary-500); */
+/*   color: var(--neutral-100); */
+/* } */
+
+/* Color Variables */
+:root {
+  --primary-100: #e2eeff;
+  --primary-200: #c9deff;
+  --primary-300: #afcfff;
+  --primary-400: #96c0ff;
+  --primary-500: #71a1e8;
+  --primary-600: #4977bc;
+  --primary-700: #29518e;
+  --primary-800: #123160;
+  --primary-900: #041835;
+  --secondary-100: #fee2ff;
+  --secondary-200: #fec9ff;
+  --secondary-300: #fdafff;
+  --secondary-400: #fd96ff;
+  --secondary-500: #e671e8;
+  --secondary-600: #ba49bc;
+  --secondary-700: #8d298e;
+  --secondary-800: #5f1260;
+  --secondary-900: #340435;
+  --tertiary-100: #e2fff5;
+  --tertiary-200: #c9ffed;
+  --tertiary-300: #afffe4;
+  --tertiary-400: #96ffdc;
+  --tertiary-500: #71e8c0;
+  --tertiary-600: #49bc96;
+  --tertiary-700: #298e6d;
+  --tertiary-800: #126046;
+  --tertiary-900: #043525;
+  --neutral-100: #ffffff;
+  --neutral-200: #ffffff;
+  --neutral-300: #f2f2f2;
+  --neutral-400: #c6cad1;
+  --neutral-500: #97a2b2;
+  --neutral-600: #637084;
+  --neutral-700: #3a4659;
+  --neutral-800: #19212d;
+  --neutral-900: #000000;
+  --green-100: #fcfffd;
+  --green-200: #e2ffe9;
+  --green-300: #c9ffd5;
+  --green-400: #afffc2;
+  --green-500: #85e29b;
+  --green-600: #59b76f;
+  --green-700: #358949;
+  --green-800: #1a5b29;
+  --green-900: #093012;
+  --orange-100: #fffdfc;
+  --orange-200: #ffede2;
+  --orange-300: #ffddc9;
+  --orange-400: #ffceaf;
+  --orange-500: #e2a985;
+  --orange-600: #b77d59;
+  --orange-700: #895535;
+  --orange-800: #5b331a;
+  --orange-900: #301809;
+  --red-100: #fffcfc;
+  --red-200: #ffe2e2;
+  --red-300: #ffc9c9;
+  --red-400: #ffafaf;
+  --red-500: #e28585;
+  --red-600: #b75959;
+  --red-700: #893535;
+  --red-800: #5b1a1a;
+  --red-900: #300909;
+  --blue-100: #fcfdff;
+  --blue-200: #e2f3ff;
+  --blue-300: #c9e9ff;
+  --blue-400: #afdfff;
+  --blue-500: #85bde2;
+  --blue-600: #5992b7;
+  --blue-700: #356889;
+  --blue-800: #1a415b;
+  --blue-900: #092030;
+}

@@ -3,14 +3,13 @@
 {% block title %}Color Palette Files{% endblock %}
 
 {% block content %}
-    <h2 class="top-padding">Color Palette Files</h2>
+    <h2 class="top-padding">Palette Files - '{{ data.name }}'</h2>
     <div class="container">
         <div class="row">
-            <div class="col-md-4 top-padding section-padding">
+            <div class="col-md-6 section-padding">
     {% if data %}
-    <p>Name: <strong>{{ data.name }}</strong></p>
     <div class="row">
-    <div class="col-md-4 no-padding">
+    <div class="col-sm-4 no-padding">
         <div class="rounded-color-box" style="background-color: {{ data.primary }};">
         <p><small>Primary</small></p>
         </div>
@@ -32,10 +31,46 @@
     </div>
 
     <h3>Download Files</h3>
-    <p><a href="{{ url_for('main.download_file', palette_name=data.name, filename=data.png_file) }}" download>Download PNG Image</a></p>
-    <p><a href="{{ url_for('main.download_file', palette_name=data.name, filename=data.excel_file) }}" download>Download Excel File</a></p>
+    {% for file in data.files %}
+    <!-- File Card -->
+    <div class="card">
+        {% if file.extension == 'css' %}
+        <div class="icon-container file-css">
+            <i class="fab fa-css3 icon"></i>
+        </div>
+        {% elif file.extension == 'png' %}
+        <div class="icon-container file-png">
+            <i class="fas fa-file-image icon"></i>
+        </div>
+        {% elif file.extension == 'xlsx' %}
+        <div class="icon-container file-excel">
+            <i class="fas fa-file-excel icon"></i>
+        </div>
+        {% elif file.extension == 'dart' %}
+        <div class="icon-container file-dart">
+            <i class="fas fa-code icon"></i>
+        </div>
+        {% elif file.extension == 'json' %}
+        <div class="icon-container file-json">
+            <i class="fab fa-codepen icon"></i>
+        </div>
+        <!-- add file extension conditions -->
+        {% else %}
+        <div class="icon-container">
+            <i class="fas fa-file-alt icon"></i>
+        </div>
+        {% endif %}
+
+        <div class="container">
+            <h4><b>{{ file.extension|upper }}</b></h4>
+            <p class="small">{{ file.name|truncate(15) }}{{ file.extension }}</p>
+            <div><a href="{{ url_for('main.download_file', palette_name=data.name, filename=file.name) }}" class="btn btn-sm download-btn"><i class="fas fa-download"></i> Download</a></div>
+        </div>
     </div>
-    <div class="col-md-8 section-padding">
+    <!-- File Card End -->
+    {% endfor %}
+    </div>
+    <div class="col-md-6 section-padding">
         <img src="{{ url_for('main.display_image', palette_name=data.name, filename=data.png_file) }}" alt="Color Palette Image" class="img-fluid">
     </div>
     </div>

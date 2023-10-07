@@ -7,10 +7,6 @@ main_bp = Blueprint('main', __name__)
 def home():
     return render_template('home.html')
 
-@main_bp.route('/clear')
-def clear():
-    return render_template('clear.html')
-
 @main_bp.route('/download/<palette_name>/<filename>')
 def download_file(palette_name, filename):
     directory = f'files/{palette_name}'  # Specify the directory where your palettes are stored
@@ -44,14 +40,18 @@ def generate():
 
         # Generate the palette
         palette = gen.PaletteGenerator(name, primary_hex, secondary_hex, tertiary_hex)
-        #Test data for output
+        # Get file extensions for pallette.user_data['files'] for data
+        for i, file in enumerate(palette.user_data['files']):
+            palette.user_data['files'][i] = {'name': file, 'extension': file.split('.')[-1]}
+
         data = {'name': palette.user_data['name'],
                 'primary': palette.user_data['primary'],
                 'secondary': palette.user_data['secondary'],
                 'tertiary': palette.user_data['tertiary'],
-                'excel_file': palette.user_data['excel_file'],
                 'png_file': palette.user_data['png_file'],
+                'files': palette.user_data['files'],
                 }
+        print(data)
         return render_template('generate.html', data=data)
     else:
         # Return to the homepage if GET request
@@ -62,19 +62,17 @@ def generate():
 def manage():
     # Get all palettes
     palettes = gen.get_all_palettes()
-    if request.method == 'POST':
-        # Get the name of the palette(s) to delete
-        palette_names = request.form.get('palette_name')
-        #Check what action to take against the palette
-        if request.form.get('action') == 'delete':
-            # Delete the palette
-            gen.delete_palette(palette_names)
-        elif request.form.get('action') == 'rename':
-            # Rename the palette
-            new_name = request.form.get('new_name')
-            gen.rename_palette(palette_names, new_name)
-        # Get all palettes again
-        palettes = gen.get_all_palettes()
-        return render_template('manage_files.html', palettes=palettes)
+    for palette in palettes:
+        for i, file in enumerate(palette['files']):
+            palette['files'][i] = {'name': file, 'extension': file.split('.')[-1]}
+
     print(palettes)
     return render_template('manage_files.html', palettes=palettes)
+
+# Route to delete folder taking in the name of the folder
+@main_bp.route('/delete/<palette_name>')
+def delete(palette_name):
+    # Delete the palette
+    gen.delete_palette(palette_name)
+    # Redirect to manage page
+    return redirect('/manage')

@@ -1,0 +1,69 @@
+/* EXAMPLE USAGE */
+/* .header { */
+/* background-color: var(--primary-500); */
+/* color: var(--neutral-900); */
+/* } */
+
+/* Button Styles */
+/* .button { */
+/*   background-color: var(--secondary-500); */
+/*   color: var(--neutral-100); */
+/* } */
+
+/* Color Variables */
+:root {
+  --primary-100: #edfffa;
+  --primary-200: #d3fff4;
+  --primary-300: #baffed;
+  --primary-400: #93ead4;
+  --primary-500: #6ac9b1;
+  --primary-600: #439e87;
+  --primary-700: #25705d;
+  --primary-800: #0f4235;
+  --primary-900: #021611;
+  --neutral-100: #ffffff;
+  --neutral-200: #ffffff;
+  --neutral-300: #f2f2f2;
+  --neutral-400: #c6d1ce;
+  --neutral-500: #97b2ab;
+  --neutral-600: #63847c;
+  --neutral-700: #3a5951;
+  --neutral-800: #192d28;
+  --neutral-900: #000000;
+  --green-100: #ffffff;
+  --green-200: #edfff1;
+  --green-300: #d3ffdd;
+  --green-400: #a7e5b5;
+  --green-500: #7bc48c;
+  --green-600: #519961;
+  --green-700: #2e6b3c;
+  --green-800: #143d1d;
+  --green-900: #041107;
+  --orange-100: #ffffff;
+  --orange-200: #fff3ed;
+  --orange-300: #ffe4d3;
+  --orange-400: #e5bfa7;
+  --orange-500: #c4977b;
+  --orange-600: #996c51;
+  --orange-700: #6b452e;
+  --orange-800: #3d2314;
+  --orange-900: #110904;
+  --red-100: #ffffff;
+  --red-200: #ffeded;
+  --red-300: #ffd3d3;
+  --red-400: #e5a7a7;
+  --red-500: #c47b7b;
+  --red-600: #995151;
+  --red-700: #6b2e2e;
+  --red-800: #3d1414;
+  --red-900: #110404;
+  --blue-100: #ffffff;
+  --blue-200: #edf7ff;
+  --blue-300: #d3edff;
+  --blue-400: #a7cce5;
+  --blue-500: #7ba7c4;
+  --blue-600: #517c99;
+  --blue-700: #2e526b;
+  --blue-800: #142c3d;
+  --blue-900: #040c11;
+}

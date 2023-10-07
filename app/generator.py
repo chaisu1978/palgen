@@ -7,6 +7,7 @@ import colorsys
 import openpyxl
 from openpyxl.styles import PatternFill, Font, Alignment, Color
 from openpyxl.utils import get_column_letter
+import json
 
 def get_all_palettes():
     palettes = []
@@ -19,6 +20,26 @@ def get_all_palettes():
                 palette['files'].append(file)
             palettes.append(palette)
     return palettes
+
+def get_palette_files(palette_name):
+    files = []
+    for root, dirs, files in os.walk('app/files'):
+        for dir in dirs:
+            if dir == palette_name:
+                for file in os.listdir(os.path.join(root, dir)):
+                    files.append(file)
+    return files
+
+def delete_palette(palette_name):
+    for root, dirs, files in os.walk('app/files'):
+        for dir in dirs:
+            if dir == palette_name:
+                for file in os.listdir(os.path.join(root, dir)):
+                    os.remove(os.path.join(root, dir, file))
+                os.rmdir(os.path.join(root, dir))
+
+                return True
+    return False
 
 def hsb_to_rgb(hsb):
     rgb = tuple(int(x * 255) for x in colorsys.hsv_to_rgb(hsb[0] / 360, hsb[1] / 100, hsb[2] / 100))
@@ -46,14 +67,14 @@ def generate_shades(base_color):
     h, s, b = base_color
     shades = {}
     shades["500"] = base_color
-    shades["100"] = (h, round(max(0, s - 40)), round(min(b + 50, 100)))
-    shades["900"] = (h, round(min(s + 40, 100)), round(max(b - 70, 0)))
-    shades["300"] = (h, round(max(0, s - 20)), round(min(b + 25, 100)))
-    shades["700"] = (h, round(min(s + 20, 100)), round(max(b - 35, 0)))
-    shades["200"] = (h, round(max(0, s - 30)), round(min(b + 37.5, 100)))
-    shades["400"] = (h, round(max(0, s - 10)), round(min(b + 12.5, 100)))
-    shades["600"] = (h, round(min(s + 10, 100)), round(max(b - 17.5, 0)))
-    shades["800"] = (h, round(min(s + 30, 100)), round(max(b - 52.5, 0)))
+    shades["100"] = (h, max(0, s - 40), min(b + 50, 100))
+    shades["900"] = (h, min(s + 40, 100), max(b - 70, 0))
+    shades["300"] = (h, max(0, s - 20), min(b + 25, 100))
+    shades["700"] = (h, min(s + 20, 100), max(b - 35, 0))
+    shades["200"] = (h, max(0, s - 30), min(b + 37.5, 100))
+    shades["400"] = (h, max(0, s - 10), min(b + 12.5, 100))
+    shades["600"] = (h, min(s + 10, 100), max(b - 17.5, 0))
+    shades["800"] = (h, min(s + 30, 100), max(b - 52.5, 0))
     shades = dict(sorted(shades.items(), key=lambda item: int(item[0])))
     return shades
 
@@ -85,7 +106,13 @@ def generate_palette(primary, secondary=None, tertiary=None):
     for color in supporting_colors:
         palette[color] = generate_shades(supporting_colors[color])
 
+    # Convert lists to tuples
+    for name, values in palette.items():
+        for shade, hsb in values.items():
+            palette[name][shade] = tuple(hsb)
+
     return palette
+
 
 class PaletteGenerator:
     def __init__(self, name, primary, secondary=None, tertiary=None):
@@ -102,9 +129,8 @@ class PaletteGenerator:
             'primary': self.primary,
             'secondary': self.secondary,
             'tertiary': self.tertiary,
+            'files': [f'{self.name}-color-palette.png', f'{self.name}-color-pallete.xlsx', f'{self.name}-color-palette.css', f'{self.name}-color-palette.dart', f'{self.name}-color-palette.json'],
             'png_file': f'{self.name}-color-palette.png',
-            'excel_file': f'{self.name}-color-pallete.xlsx',
-            'css_file': f'{self.name}-color-palette.css',
         }
 
     def create_directories(self):
@@ -118,7 +144,8 @@ class PaletteGenerator:
         self.generate_png_image()
         self.generate_excel_file()
         self.generate_css_file()
-
+        self.generate_dart_file()
+        self.generate_json_file()
 
     def generate_png_image(self):
         img_width = int(11.69 * 150)
@@ -192,9 +219,76 @@ class PaletteGenerator:
     def generate_css_file(self):
         css_filename = f'app/files/{self.name}/{self.name}-color-palette.css'
         with open(css_filename, 'w') as css_file:
+            css_file.write('/* EXAMPLE USAGE */\n')
+            css_file.write('/* .header { */\n')
+            css_file.write('/* background-color: var(--primary-500); */\n')
+            css_file.write('/* color: var(--neutral-900); */\n')
+            css_file.write('/* } */\n\n')
+
+            css_file.write('/* Button Styles */\n')
+            css_file.write('/* .button { */\n')
+            css_file.write('/*   background-color: var(--secondary-500); */\n')
+            css_file.write('/*   color: var(--neutral-100); */\n')
+            css_file.write('/* } */\n\n')
+
+            css_file.write('/* Color Variables */\n')
             css_file.write(':root {\n')
             for name, palette in self.palette.items():
                 for shade, hsb in palette.items():
                     hex_rgb = hsb_to_hex(hsb)
                     css_file.write(f'  --{name.lower()}-{shade}: {hex_rgb};\n')
             css_file.write('}\n')
+
+    def generate_dart_file(self):
+        dart_filename = f'app/files/{self.name}/{self.name}-color-palette.dart'
+
+        with open(dart_filename, 'w') as dart_file:
+            dart_file.write("import 'package:flutter/material.dart';\n\n")
+            dart_file.write("class MyPalette {\n")
+
+            # Define your color constants
+            for name, palette in self.palette.items():
+                for shade, hsb in palette.items():
+                    hex_rgb = hsb_to_hex(hsb)
+                    dart_file.write(
+                        f"  static const Color {name.lower()}{shade} = Color(0x{hex_rgb[1:]});\n")
+
+            dart_file.write("\n")
+            dart_file.write("  // Define ThemeData\n")
+            dart_file.write("  static ThemeData myAppTheme = ThemeData(\n")
+            dart_file.write("    primaryColor: Primary500,  // Replace with your primary color\n")
+            dart_file.write("    accentColor: Secondary500,  // Replace with your secondary color\n")
+            dart_file.write("    // Define other theme properties as needed\n")
+            dart_file.write("  );\n")
+
+            dart_file.write("\n")
+            dart_file.write("  // Define custom text styles\n")
+            for name, palette in self.palette.items():
+                for shade, hsb in palette.items():
+                    dart_file.write(
+                        f"  static TextStyle {name.lower()}{shade}TextStyle = TextStyle(\n")
+                    dart_file.write(f"    color: {name.lower()}{shade},\n")
+                    dart_file.write("    // Define text styling properties as needed\n")
+                    dart_file.write("  );\n")
+
+            dart_file.write("}\n")
+
+    def generate_json_file(self):
+        # Create the JSON data dictionary
+        json_data = {
+            'name': self.name,
+            'palette_hsl': {},
+        }
+
+        # Add each color palette to the JSON data
+        for palette_name, palette_values in self.palette.items():
+            json_data['palette_hsl'][palette_name] = {
+                level: hsl for level, hsl in palette_values.items()
+            }
+
+        # Define the output JSON filename
+        json_filename = f'app/files/{self.name}/{self.name}-color-palette.json'
+
+        # Write the JSON data to the file with proper indentation
+        with open(json_filename, 'w') as json_file:
+            json.dump(json_data, json_file, indent=4)
