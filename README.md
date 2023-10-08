@@ -19,11 +19,11 @@
 
 ## What PalGen Does
 
-The Color Palette Generator creates a UI design pallette which includes shades from 100 to 900 for each color selected above (Primary, Secondary & Tertiary) as well as shades for the palette's supporting colors: Neutral grey, Blue, Red, Green, and Orange (for use in interface elements - e.g. buttons, charts and graphs).
+The Color Palette Generator creates a UI design pallette which includes shades from 100 to 900 for each that the user supplies (Primary, Secondary & Tertiary), as well as shades for the palette's supporting colors: Neutral Grey, Blue, Red, Green, and Orange (for use in interface elements - e.g. backgrounds, buttons, charts, graphs etc.).
 
 ## How To Use PalGen
 
-To use PalGen, give your palette a name and select at least a Primary color. Secondary and Tertiary colors are OPTIONAL. Once you have selected your colors, click the "Generate Palette" button. Once generated, you will be taken to a page where you can download your palette in the formats provided.
+To use PalGen, give your palette a name and select at least a Primary color. Secondary and Tertiary colors are OPTIONAL. Once you have selected your colors, click "Generate Palette". This will create the palette and provide download links for the various file formats provided.
 
 ## What It Makes
 
