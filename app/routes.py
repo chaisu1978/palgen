@@ -51,7 +51,6 @@ def generate():
                 'png_file': palette.user_data['png_file'],
                 'files': palette.user_data['files'],
                 }
-        print(data)
         return render_template('generate.html', data=data)
     else:
         # Return to the homepage if GET request
@@ -66,7 +65,6 @@ def manage():
         for i, file in enumerate(palette['files']):
             palette['files'][i] = {'name': file, 'extension': file.split('.')[-1]}
 
-    print(palettes)
     return render_template('manage_files.html', palettes=palettes)
 
 # Route to delete folder taking in the name of the folder

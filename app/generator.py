@@ -183,12 +183,6 @@ class PaletteGenerator:
                 text = f"Weight - {shade}\nHSB - {palette[shade]}\nRGB - {rgb}\nHEX - {hex_rgb}"
                 draw_rectangle(d, rgb, text, name, i, j)
 
-        # Draw palette names in the last row
-        for j, (name, palette) in enumerate(self.palette.items()):
-            rgb = hsb_to_rgb(palette["500"])
-            hex_rgb = hsb_to_hex(palette["500"])
-            text = f"{name}"
-            draw_rectangle(d, rgb, text, name, len(palette) - 1, j)
 
         img.save(f'app/files/{self.name}/{self.name}-color-palette.png')
 
