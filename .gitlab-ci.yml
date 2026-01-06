@@ -1,0 +1,115 @@
+# .gitlab-ci.yml
+image: docker:20.10.16-dind
+
+services:
+  - docker:dind
+
+stages:
+  - test
+  - build-backend
+  - build-frontend
+  - build-nginx
+  - deploy
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_HOST: tcp://docker:2375
+
+test:
+  stage: test
+  image: docker:20.10.16
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+  before_script:
+    - apk add --no-cache docker-compose
+    - echo "$ENV_DEV" > .env
+  script:
+    # Run your dev docker-compose for tests
+    # - docker-compose -f docker-compose.yml run --rm backend sh -c "flake8"
+    - docker-compose -f docker-compose.yml run --rm backend sh -c "python manage.py test"
+    # Optionally run React tests
+    # - docker-compose -f docker-compose.yml run --rm frontend sh -c "npm install && npm test"
+  after_script:
+    - docker-compose -f docker-compose.yml down
+  cache:
+    paths:
+      - .cache/pip/
+  # except:
+  #   - tags
+  rules:
+    - when: never  # This disables the test stage completely
+
+build-backend:
+  stage: build-backend
+  script:
+    - docker login registry.webworkstt.com -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+    - docker build -t registry.webworkstt.com/webapps/palgen/backend:latest -f deployment/Dockerfile.backend .
+    - docker push registry.webworkstt.com/webapps/palgen/backend:latest
+  only:
+    - main
+
+build-frontend:
+  stage: build-frontend
+  image: node:20
+  script:
+    - echo "Building frontend with VITE_API_BASE_URL=$VITE_API_BASE_URL"
+    - cd frontend
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - frontend/dist  # Save the frontend build as an artifact
+    expire_in: 1 hour
+  only:
+    - main
+
+build-nginx:
+  stage: build-nginx
+  dependencies:
+    - build-frontend  # Ensure it waits for frontend build
+  script:
+    - ls -l frontend/dist  # Debug: Check if frontend build exists
+    - cp -r frontend/dist deployment/frontend-dist  # Copy artifact into Docker build context
+    - docker login registry.webworkstt.com -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+    - docker build --build-arg VITE_API_BASE_URL=$VITE_API_BASE_URL -t registry.webworkstt.com/webapps/palgen/nginx:latest -f deployment/Dockerfile.nginx .
+    - docker push registry.webworkstt.com/webapps/palgen/nginx:latest
+  only:
+    - main
+  artifacts:
+    paths:
+      - frontend/dist  # Ensure frontend build is available for nginx
+    expire_in: 1 hour
+
+deploy:
+  stage: deploy
+  environment:
+    name: production
+    url: https://palgen.webworkstt.com/
+  before_script:
+    - apk add --no-cache openssh-client docker-compose
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+  script:
+    - ssh -o StrictHostKeyChecking=no thosang@192.168.1.106 "mkdir -p ~/deployments/palgen"
+    - scp deployment/docker-compose.prod.yml thosang@192.168.1.106:~/deployments/palgen/docker-compose.yml
+    - echo "$ENV_PROD" | ssh -o StrictHostKeyChecking=no thosang@192.168.1.106 "cat > ~/deployments/palgen/.env.prod"
+    - echo "VITE_API_BASE_URL=$VITE_API_BASE_URL" | ssh -o StrictHostKeyChecking=no thosang@192.168.1.106 "cat > ~/deployments/palgen/.env.prod.frontend"
+    - |
+      ssh -o StrictHostKeyChecking=no thosang@192.168.1.106 "
+        set -e
+        cd ~/deployments/palgen
+        docker login registry.webworkstt.com -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+        docker compose pull
+        docker compose down
+        docker volume rm palgen_static_volume || true
+        docker compose up -d
+        docker image prune -f
+      "
+  only:
+    - main

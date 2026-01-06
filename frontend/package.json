@@ -1,0 +1,50 @@
+{
+  "name": "frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@iconify/react": "^6.0.0",
+    "@mui/icons-material": "^7.2.0",
+    "@mui/lab": "^7.0.0-beta.14",
+    "@mui/material": "^7.2.0",
+    "@mui/x-data-grid": "^8.7.0",
+    "@mui/x-date-pickers": "^8.7.0",
+    "@reduxjs/toolkit": "^2.8.2",
+    "@tanstack/react-query": "^5.82.0",
+    "@toolpad/core": "^0.16.0",
+    "axios": "^1.10.0",
+    "date-fns": "^4.1.0",
+    "formik": "^2.4.6",
+    "framer-motion": "^12.23.3",
+    "mui-color-input": "^7.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-icons": "^5.5.0",
+    "react-leaflet": "^5.0.0",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.6.3",
+    "yup": "^1.6.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.30.1",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "eslint": "^9.30.1",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.3.0",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.35.1",
+    "vite": "^7.0.4"
+  }
+}
